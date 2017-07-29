@@ -1,31 +1,16 @@
-import React, { Component } from 'react'
-import { AppRegistry, StyleSheet, Text, View } from 'react-native'
+import { AppRegistry } from 'react-native'
+import Octicons from 'react-native-vector-icons/Fonts/Octicons.ttf'
 
-export default class GHViewer extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native and Electron!
-        </Text>
-      </View>
-    )
-  }
-}
+import GHViewer from './src/components/HomeScreen'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-})
+const style = document.createElement('style')
+style.type = 'text/css'
+style.appendChild(
+  document.createTextNode(
+    `@font-face { src: url(${Octicons}); font-family: "Octicons"; }`,
+  ),
+)
+document.head.appendChild(style)
 
 AppRegistry.registerComponent('GHViewer', () => GHViewer)
 AppRegistry.runApplication('GHViewer', {

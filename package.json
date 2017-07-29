@@ -13,17 +13,20 @@
   },
   "dependencies": {
     "babel-regenerator-runtime": "^6.5.0",
-    "electron": "~1.6.11",
+    "electron": "^1.6.11",
     "react": "~15.4.1",
     "react-dom": "~15.4.2",
     "react-native": "0.42.3",
     "react-native-electron": "^0.0.17",
+    "react-native-elements": "^0.15.0",
+    "react-native-vector-icons": "^4.2.0",
     "react-native-web": "^0.0.113"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",
     "babel-loader": "^7.1.1",
     "babel-preset-react-native": "2.1.0",
+    "file-loader": "^0.11.2",
     "flow-bin": "^0.38.0",
     "jest": "20.0.4",
     "react-test-renderer": "~15.4.1",

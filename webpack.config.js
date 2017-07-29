@@ -11,8 +11,12 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!react-native-(elements|side-menu|tab-navigator|vector-icons)\/).*/,
         loader: 'babel-loader',
+      },
+      {
+        test: /\.(png|ttf)$/,
+        loader: 'file-loader',
       },
     ],
   },
