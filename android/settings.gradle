@@ -1,0 +1,3 @@
+rootProject.name = 'GHViewer'
+
+include ':app'
