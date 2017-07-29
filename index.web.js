@@ -1,7 +1,7 @@
 import { AppRegistry } from 'react-native'
 import Octicons from 'react-native-vector-icons/Fonts/Octicons.ttf'
 
-import GHViewer from './src/components/HomeScreen'
+import GHViewer from './src/components/App'
 
 const style = document.createElement('style')
 style.type = 'text/css'
