@@ -1,23 +1,36 @@
 {
-	"name": "GHViewer",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"test": "jest"
-	},
-	"dependencies": {
-		"react": "~15.4.1",
-		"react-native": "0.42.3"
-	},
-	"devDependencies": {
-		"babel-jest": "20.0.3",
-		"babel-preset-react-native": "2.1.0",
-		"flow-bin": "^0.38.0",
-		"jest": "20.0.4",
-		"react-test-renderer": "~15.4.1"
-	},
-	"jest": {
-		"preset": "react-native"
-	}
+  "name": "GHViewer",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "desktop": "electron ./desktop/main.js",
+    "webpack": "webpack --progress",
+    "webpack-server": "webpack-dev-server --hot --progress",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "babel-regenerator-runtime": "^6.5.0",
+    "electron": "~1.6.11",
+    "react": "~15.4.1",
+    "react-dom": "~15.4.2",
+    "react-native": "0.42.3",
+    "react-native-electron": "^0.0.17",
+    "react-native-web": "^0.0.113"
+  },
+  "devDependencies": {
+    "babel-jest": "20.0.3",
+    "babel-loader": "^7.1.1",
+    "babel-preset-react-native": "2.1.0",
+    "flow-bin": "^0.38.0",
+    "jest": "20.0.4",
+    "react-test-renderer": "~15.4.1",
+    "webpack": "^3.4.1",
+    "webpack-dev-server": "^2.6.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
 }
