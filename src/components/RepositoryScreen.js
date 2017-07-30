@@ -1,34 +1,193 @@
 // @flow
 
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
-import { Icon, Text } from 'react-native-elements'
-import { createFragmentContainer, graphql } from 'react-relay'
+import { Linking, ScrollView, StyleSheet, View } from 'react-native'
+import { List, ListItem, Icon, Text } from 'react-native-elements'
+import { commitMutation, createFragmentContainer, graphql } from 'react-relay'
+
+import { EnvironmentPropType } from '../Environment'
 
 import ScreenRenderer from './ScreenRenderer'
 import sharedStyles from './styles'
 
 import type { RepositoryScreen_repository as RepositoryType } from './__generated__/HomeScreen_viewer.graphql'
 
-const Repository = ({ repository }: { repository: RepositoryType }) => {
-  return (
-    <ScrollView style={sharedStyles.scene}>
-      <View style={sharedStyles.mainContents}>
-        <Text>
-          Repository screen: {repository.owner.login}/{repository.name}
-        </Text>
-      </View>
-    </ScrollView>
-  )
+const AddStarMutation = graphql`
+  mutation RepositoryScreenAddStarMutation($input: AddStarInput!) {
+    addStar(input: $input) {
+      starrable {
+        stargazers {
+          totalCount
+        }
+        viewerHasStarred
+      }
+    }
+  }
+`
+
+const RemoveStarMutation = graphql`
+  mutation RepositoryScreenRemoveStarMutation($input: RemoveStarInput!) {
+    removeStar(input: $input) {
+      starrable {
+        stargazers {
+          totalCount
+        }
+        viewerHasStarred
+      }
+    }
+  }
+`
+
+class Repository extends Component {
+  static contextTypes = {
+    environment: EnvironmentPropType.isRequired,
+  }
+
+  props: {
+    navigation: Object,
+    repository: RepositoryType,
+  }
+
+  onPressParent = () => {
+    const { navigation, repository } = this.props
+    navigation.navigate('Repository', {
+      id: repository.parent.id,
+      name: repository.parent.nameWithOwner,
+    })
+  }
+
+  onPressStar = () => {
+    const { repository } = this.props
+    const isAdding = !repository.viewerHasStarred
+
+    commitMutation(this.context.environment, {
+      mutation: isAdding ? AddStarMutation : RemoveStarMutation,
+      variables: {
+        input: {
+          starrableId: repository.id,
+        },
+      },
+      optimisticResponse: isAdding
+        ? {
+            addStar: {
+              starrable: {
+                __typename: 'Repository',
+                stargazers: {
+                  totalCount: repository.stargazers.totalCount + 1,
+                },
+                viewerHasStarred: true,
+              },
+            },
+          }
+        : {
+            removeStar: {
+              starrable: {
+                __typename: 'Repository',
+                stargazers: {
+                  totalCount: repository.stargazers.totalCount - 1,
+                },
+                viewerHasStarred: false,
+              },
+            },
+          },
+    })
+  }
+
+  onPressOpenLink = () => {
+    const { repository } = this.props
+    Linking.openURL(
+      `https://github.com/${repository.owner.login}/${repository.name}`,
+    )
+  }
+
+  render() {
+    const { repository } = this.props
+
+    const description = repository.description
+      ? <View style={sharedStyles.mainContents}>
+          <Text h5>
+            {repository.description}
+          </Text>
+        </View>
+      : null
+
+    const starCount = repository.stargazers.totalCount
+
+    const items = [
+      <ListItem
+        hideChevron
+        key="owner"
+        leftIcon={{
+          name:
+            repository.owner.__typename === 'User' ? 'person' : 'organization',
+          type: 'octicon',
+        }}
+        title={repository.owner.login}
+      />,
+    ]
+    if (repository.isFork) {
+      items.push(
+        <ListItem
+          key="parent"
+          leftIcon={{ name: 'repo-forked', type: 'octicon' }}
+          onPress={this.onPressParent}
+          rightIcon={{ name: 'chevron-right', type: 'octicon' }}
+          title={repository.parent.nameWithOwner}
+        />,
+      )
+    }
+    items.push(
+      <ListItem
+        key="star"
+        leftIcon={{ name: 'star', type: 'octicon' }}
+        onPress={this.onPressStar}
+        rightIcon={{
+          name: repository.viewerHasStarred ? 'x' : 'plus',
+          type: 'octicon',
+        }}
+        title={`${starCount} star${starCount > 1 ? 's' : ''}`}
+      />,
+    )
+    items.push(
+      <ListItem
+        key="open"
+        leftIcon={{ name: 'mark-github', type: 'octicon' }}
+        onPress={this.onPressOpenLink}
+        rightIcon={{ name: 'link-external', type: 'octicon' }}
+        title="Open in GitHub"
+      />,
+    )
+
+    return (
+      <ScrollView style={sharedStyles.scene}>
+        {description}
+        <List containerStyle={styles.listContainer}>
+          {items}
+        </List>
+      </ScrollView>
+    )
+  }
 }
 
 const RepositoryContainer = createFragmentContainer(Repository, {
   repository: graphql`
     fragment RepositoryScreen_repository on Repository {
+      description
+      id
+      isFork
       name
       owner {
+        __typename
         login
       }
+      parent {
+        id
+        nameWithOwner
+      }
+      stargazers {
+        totalCount
+      }
+      viewerHasStarred
     }
   `,
 })
@@ -56,6 +215,7 @@ export default class RepositoryScreen extends Component {
     return (
       <ScreenRenderer
         container={RepositoryContainer}
+        navigation={this.props.navigation}
         query={graphql`
           query RepositoryScreenQuery($id: ID!) {
             repository: node(id: $id) {
@@ -70,3 +230,9 @@ export default class RepositoryScreen extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  listContainer: {
+    marginTop: 0,
+  },
+})

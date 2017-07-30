@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 651068836c840c546bcb0cb1127476e5
+ * @relayHash f9f370b1e141d0aed2acccc84b12ec43
  */
 
 /* eslint-disable */
@@ -16,7 +16,10 @@ export type HomeScreenQueryResponse = {|
 
 
 /*
-query HomeScreenQuery {
+query HomeScreenQuery(
+  $count: Int!
+  $cursor: String
+) {
   viewer {
     ...HomeScreen_viewer
     id
@@ -24,10 +27,31 @@ query HomeScreenQuery {
 }
 
 fragment HomeScreen_viewer on User {
-  repositories(first: 10, orderBy: {field: UPDATED_AT, direction: DESC}) {
-    nodes {
-      ...HomeScreen_repository
-      id
+  repositories(after: $cursor, first: $count, orderBy: {field: UPDATED_AT, direction: DESC}) {
+    edges {
+      node {
+        ...HomeScreen_repository
+        id
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    ... on RepositoryConnection {
+      edges {
+        cursor
+        node {
+          __typename
+          id
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
     }
   }
 }
@@ -49,7 +73,20 @@ fragment HomeScreen_repository on Repository {
 
 const batch /*: ConcreteBatch*/ = {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": [
+      {
+        "kind": "LocalArgument",
+        "name": "count",
+        "type": "Int!",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "cursor",
+        "type": "String",
+        "defaultValue": null
+      }
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "HomeScreenQuery",
@@ -78,7 +115,20 @@ const batch /*: ConcreteBatch*/ = {
   "metadata": {},
   "name": "HomeScreenQuery",
   "query": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": [
+      {
+        "kind": "LocalArgument",
+        "name": "count",
+        "type": "Int!",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "cursor",
+        "type": "String",
+        "defaultValue": null
+      }
+    ],
     "kind": "Root",
     "name": "HomeScreenQuery",
     "operation": "query",
@@ -107,9 +157,15 @@ const batch /*: ConcreteBatch*/ = {
                 "alias": null,
                 "args": [
                   {
-                    "kind": "Literal",
+                    "kind": "Variable",
+                    "name": "after",
+                    "variableName": "cursor",
+                    "type": "String"
+                  },
+                  {
+                    "kind": "Variable",
                     "name": "first",
-                    "value": 10,
+                    "variableName": "count",
                     "type": "Int"
                   },
                   {
@@ -130,21 +186,25 @@ const batch /*: ConcreteBatch*/ = {
                     "kind": "LinkedField",
                     "alias": null,
                     "args": null,
-                    "concreteType": "Repository",
-                    "name": "nodes",
+                    "concreteType": "RepositoryEdge",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
                       {
-                        "kind": "ScalarField",
+                        "kind": "LinkedField",
                         "alias": null,
                         "args": null,
-                        "name": "id",
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "InlineFragment",
-                        "type": "Repository",
+                        "concreteType": "Repository",
+                        "name": "node",
+                        "plural": false,
                         "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "args": null,
+                            "name": "id",
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -204,13 +264,139 @@ const batch /*: ConcreteBatch*/ = {
                             ],
                             "storageKey": null
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       }
                     ],
                     "storageKey": null
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "PageInfo",
+                    "name": "pageInfo",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "args": null,
+                        "name": "endCursor",
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "args": null,
+                        "name": "hasNextPage",
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "RepositoryConnection",
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "RepositoryEdge",
+                        "name": "edges",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "args": null,
+                            "name": "cursor",
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Repository",
+                            "name": "node",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "args": null,
+                                "name": "__typename",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "PageInfo",
+                        "name": "pageInfo",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "args": null,
+                            "name": "hasPreviousPage",
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "args": null,
+                            "name": "startCursor",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ]
                   }
                 ],
-                "storageKey": "repositories{\"first\":10,\"orderBy\":{\"direction\":\"DESC\",\"field\":\"UPDATED_AT\"}}"
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedHandle",
+                "alias": null,
+                "args": [
+                  {
+                    "kind": "Variable",
+                    "name": "after",
+                    "variableName": "cursor",
+                    "type": "String"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "first",
+                    "variableName": "count",
+                    "type": "Int"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "orderBy",
+                    "value": {
+                      "field": "UPDATED_AT",
+                      "direction": "DESC"
+                    },
+                    "type": "RepositoryOrder"
+                  }
+                ],
+                "handle": "connection",
+                "name": "repositories",
+                "key": "HomeScreen_repositories",
+                "filters": [
+                  "orderBy"
+                ]
               }
             ]
           }
@@ -219,7 +405,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query HomeScreenQuery {\n  viewer {\n    ...HomeScreen_viewer\n    id\n  }\n}\n\nfragment HomeScreen_viewer on User {\n  repositories(first: 10, orderBy: {field: UPDATED_AT, direction: DESC}) {\n    nodes {\n      ...HomeScreen_repository\n      id\n    }\n  }\n}\n\nfragment HomeScreen_repository on Repository {\n  id\n  name\n  nameWithOwner\n  owner {\n    __typename\n    login\n    ... on User {\n      isViewer\n    }\n    id\n  }\n}\n"
+  "text": "query HomeScreenQuery(\n  $count: Int!\n  $cursor: String\n) {\n  viewer {\n    ...HomeScreen_viewer\n    id\n  }\n}\n\nfragment HomeScreen_viewer on User {\n  repositories(after: $cursor, first: $count, orderBy: {field: UPDATED_AT, direction: DESC}) {\n    edges {\n      node {\n        ...HomeScreen_repository\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    ... on RepositoryConnection {\n      edges {\n        cursor\n        node {\n          __typename\n          id\n        }\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n        hasPreviousPage\n        startCursor\n      }\n    }\n  }\n}\n\nfragment HomeScreen_repository on Repository {\n  id\n  name\n  nameWithOwner\n  owner {\n    __typename\n    login\n    ... on User {\n      isViewer\n    }\n    id\n  }\n}\n"
 };
 
 module.exports = batch;
