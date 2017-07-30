@@ -27,4 +27,8 @@ export default StyleSheet.create({
   textCenter: {
     textAlign: 'center',
   },
+  headerIcon: {
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
 })

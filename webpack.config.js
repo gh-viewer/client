@@ -11,7 +11,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules\/(?!react-native-(elements|side-menu|tab-navigator|vector-icons)\/).*/,
+        exclude: /node_modules\/(?!react-native-(elements|side-menu|tab-navigator|tab-view|vector-icons)|react-navigation\/).*/,
         loader: 'babel-loader',
       },
       {
@@ -24,6 +24,7 @@ module.exports = {
   resolve: {
     alias: {
       'react-native': 'react-native-electron',
+      'react-navigation': 'react-navigation/lib-rn/react-navigation.js',
     },
     extensions: ['.web.js', '.js', '.json'],
   },

@@ -2,12 +2,12 @@ import React from 'react'
 
 import EnvironmentProvider from './EnvironmentProvider'
 import StoreProvider from './StoreProvider'
-import HomeScreen from './HomeScreen'
+import Navigation from './Navigation'
 
 const App = () =>
   <StoreProvider>
     <EnvironmentProvider>
-      <HomeScreen />
+      <Navigation />
     </EnvironmentProvider>
   </StoreProvider>
 
