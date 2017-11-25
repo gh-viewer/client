@@ -128,6 +128,48 @@ const fragment /*: ConcreteFragment*/ = {
             }
           ],
           "storageKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "RepositoryConnection",
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "args": null,
+              "concreteType": "RepositoryEdge",
+              "name": "edges",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "args": null,
+                  "name": "cursor",
+                  "storageKey": null
+                },
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Repository",
+                  "name": "node",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "args": null,
+                      "name": "__typename",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ]
         }
       ],
       "storageKey": "__HomeScreen_repositories_connection{\"orderBy\":{\"direction\":\"DESC\",\"field\":\"UPDATED_AT\"}}"

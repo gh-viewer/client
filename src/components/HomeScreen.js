@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react'
-import { ListView, ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { Button, Icon, List, ListItem, Text } from 'react-native-elements'
 import {
   createFragmentContainer,
@@ -27,7 +27,7 @@ type RepositoryItemProps = {
   repository: Repository,
 }
 
-const RepositoryItem = ({ navigation, repository }: RepositoryItemProps) =>
+const RepositoryItem = ({ navigation, repository }: RepositoryItemProps) => (
   <ListItem
     containerStyle={styles.itemContainer}
     title={repository.name}
@@ -40,6 +40,7 @@ const RepositoryItem = ({ navigation, repository }: RepositoryItemProps) =>
       })
     }}
   />
+)
 
 const RepositoryItemContainer = createFragmentContainer(RepositoryItem, {
   repository: graphql`
@@ -62,38 +63,17 @@ type HomeProps = {
   relay: {
     hasMore: () => boolean,
     isLoading: () => boolean,
-    loadMore: (pageSize: number) => ?Disposable,
+    loadMore: (pageSize: number, cb?: Function) => ?Disposable,
   },
   viewer: Viewer,
 }
+type HomeState = {
+  loading: boolean,
+}
 
-class Home extends Component {
-  props: HomeProps
-  state: {
-    dataSource: ListView.DataSource,
-    loading: boolean,
-  }
-
-  constructor(props: HomeProps) {
-    super(props)
-
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
-    })
-
-    this.state = {
-      dataSource: ds.cloneWithRows(props.viewer.repositories.edges),
-      loading: false,
-    }
-  }
-
-  componentWillReceiveProps(nextProps: HomeProps) {
-    const { edges } = nextProps.viewer.repositories
-    if (edges !== this.props.viewer.repositories.edges) {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(edges),
-      })
-    }
+class Home extends Component<HomeProps, HomeState> {
+  state = {
+    loading: false,
   }
 
   onPressLoadMore = () => {
@@ -105,49 +85,56 @@ class Home extends Component {
     }
   }
 
-  renderRow = edge =>
-    <RepositoryItemContainer
-      key={edge.node.id}
-      navigation={this.props.navigation}
-      repository={edge.node}
-    />
+  render() {
+    const { relay, viewer } = this.props
 
-  renderFooter = () => {
-    if (this.state.loading) {
+    if (
+      !viewer.repositories ||
+      !viewer.repositories.edges ||
+      viewer.repositories.edges.length === 0
+    ) {
       return (
+        <View style={sharedStyles.scene}>
+          <View style={sharedStyles.mainContents}>
+            <Text h3>No repository!</Text>
+          </View>
+        </View>
+      )
+    }
+
+    const rows = viewer.repositories.edges.map(edge => {
+      return edge && edge.node ? (
+        <RepositoryItemContainer
+          key={edge.node.id}
+          navigation={this.props.navigation}
+          repository={edge.node}
+        />
+      ) : null
+    })
+
+    let footer = null
+    if (this.state.loading) {
+      footer = (
         <View style={styles.buttonContainer}>
           <Button disabled title="Loading..." />
         </View>
       )
-    }
-    if (this.props.relay.hasMore()) {
-      return (
+    } else if (relay.hasMore()) {
+      footer = (
         <View style={styles.buttonContainer}>
           <Button onPress={this.onPressLoadMore} title="Load more" />
         </View>
       )
     }
-    return null
-  }
 
-  render() {
-    const { dataSource } = this.state
-    const contents =
-      dataSource.getRowCount() > 0
-        ? <ListView
-            dataSource={dataSource}
-            pageSize={PAGE_SIZE}
-            renderFooter={this.renderFooter}
-            renderRow={this.renderRow}
-            style={sharedStyles.scene}
-          />
-        : <View style={sharedStyles.scene}>
-            <View style={sharedStyles.mainContents}>
-              <Text h3>No repository!</Text>
-            </View>
-          </View>
-
-    return contents
+    return (
+      <ScrollView>
+        <List>
+          {rows}
+          {footer}
+        </List>
+      </ScrollView>
+    )
   }
 }
 
@@ -190,21 +177,21 @@ const HomeContainer = createPaginationContainer(
   },
 )
 
-export default class HomeScreen extends Component {
+export default class HomeScreen extends Component<{
+  navigation: Object,
+}> {
   static navigationOptions = {
     headerLeft: (
-      <Icon
-        name="repo"
-        type="octicon"
-        color="white"
-        style={sharedStyles.headerIcon}
-      />
+      <View style={sharedStyles.headerLeft}>
+        <Icon
+          name="repo"
+          type="octicon"
+          color="white"
+          style={sharedStyles.headerIcon}
+        />
+      </View>
     ),
     title: 'Repositories',
-  }
-
-  props: {
-    navigation: Object,
   }
 
   render() {

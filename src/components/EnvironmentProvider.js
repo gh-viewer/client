@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type Element } from 'react'
+import React, { Component, type Node } from 'react'
 import { StyleSheet, View, WebView } from 'react-native'
 import { Button, Text } from 'react-native-elements'
 import { connect } from 'react-redux'
@@ -20,22 +20,20 @@ type NavigationState = {
 }
 type Props = {
   access_token: ?string,
-  children: Element<*>,
+  children: Node,
   dispatch: (action: Action) => void,
+}
+type State = {
+  auth: AuthState,
+  environment: ?Environment,
 }
 
 // Edit here if you want to use your own authentication server
 const AUTH_SERVER = 'ghviewer.herokuapp.com'
 
-class EnvironmentProvider extends Component {
+class EnvironmentProvider extends Component<Props, State> {
   static childContextTypes = {
     environment: EnvironmentPropType,
-  }
-
-  props: Props
-  state: {
-    auth: AuthState,
-    environment: ?Environment,
   }
 
   constructor(props: Props) {

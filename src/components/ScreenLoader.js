@@ -6,7 +6,7 @@ import { Text } from 'react-native-elements'
 
 import sharedStyles from './styles'
 
-const ScreenLoader = ({ text }: { text?: string }) =>
+const ScreenLoader = ({ text }: { text?: string }) => (
   <View style={[sharedStyles.scene, sharedStyles.centerContents]}>
     <View style={sharedStyles.mainContents}>
       <ActivityIndicator animating size="large" />
@@ -15,5 +15,6 @@ const ScreenLoader = ({ text }: { text?: string }) =>
       </Text>
     </View>
   </View>
+)
 
 export default ScreenLoader

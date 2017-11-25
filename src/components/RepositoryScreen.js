@@ -38,14 +38,14 @@ const RemoveStarMutation = graphql`
   }
 `
 
-class Repository extends Component {
+type Props = {
+  navigation: Object,
+  repository: RepositoryType,
+}
+
+class Repository extends Component<Props> {
   static contextTypes = {
     environment: EnvironmentPropType.isRequired,
-  }
-
-  props: {
-    navigation: Object,
-    repository: RepositoryType,
   }
 
   onPressParent = () => {
@@ -103,13 +103,11 @@ class Repository extends Component {
   render() {
     const { repository } = this.props
 
-    const description = repository.description
-      ? <View style={sharedStyles.mainContents}>
-          <Text h5>
-            {repository.description}
-          </Text>
-        </View>
-      : null
+    const description = repository.description ? (
+      <View style={sharedStyles.mainContents}>
+        <Text h5>{repository.description}</Text>
+      </View>
+    ) : null
 
     const starCount = repository.stargazers.totalCount
 
@@ -161,9 +159,7 @@ class Repository extends Component {
     return (
       <ScrollView style={sharedStyles.scene}>
         {description}
-        <List containerStyle={styles.listContainer}>
-          {items}
-        </List>
+        <List containerStyle={styles.listContainer}>{items}</List>
       </ScrollView>
     )
   }
@@ -192,17 +188,21 @@ const RepositoryContainer = createFragmentContainer(Repository, {
   `,
 })
 
-export default class RepositoryScreen extends Component {
+export default class RepositoryScreen extends Component<{
+  navigation: Object,
+}> {
   static navigationOptions = ({ navigation }: Object) => ({
     headerLeft: (
-      <Icon
-        name="chevron-left"
-        type="octicon"
-        color="white"
-        underlayColor="black"
-        onPress={() => navigation.goBack()}
-        style={sharedStyles.headerIcon}
-      />
+      <View style={sharedStyles.headerLeft}>
+        <Icon
+          name="chevron-left"
+          type="octicon"
+          color="white"
+          underlayColor="black"
+          onPress={() => navigation.goBack()}
+          style={sharedStyles.headerIcon}
+        />
+      </View>
     ),
     title: navigation.state.params.name,
   })

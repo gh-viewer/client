@@ -1,33 +1,23 @@
 // @flow
 
-import React, { Component, type Element } from 'react'
+import React, { Component, type Node } from 'react'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/es/integration/react'
 
-import { create } from '../Store'
+import { persistor, store } from '../Store'
 
 import ScreenLoader from './ScreenLoader'
 
-export default class StoreProvider extends Component {
-  props: {
-    children?: Element<*>,
-  }
-  state: {
-    store?: Object,
-  } = {}
-
-  componentDidMount() {
-    this.createStore()
-  }
-
-  async createStore() {
-    this.setState({ store: await create() })
-  }
-
-  render() {
-    return this.state.store
-      ? <Provider store={this.state.store}>
-          {this.props.children}
-        </Provider>
-      : <ScreenLoader />
-  }
+type Props = {
+  children?: Node,
 }
+
+const StoreProvider = ({ children }: Props) => (
+  <Provider store={store}>
+    <PersistGate loading={<ScreenLoader />} persistor={persistor}>
+      {children}
+    </PersistGate>
+  </Provider>
+)
+
+export default StoreProvider

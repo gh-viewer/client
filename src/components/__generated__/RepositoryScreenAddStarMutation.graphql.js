@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash d53e829c7bcdfea2dfc7973d11203b5a
+ * @relayHash 7b87eae9b1062e7fd58e1fc452a42505
  */
 
 /* eslint-disable */
@@ -15,7 +15,6 @@ export type RepositoryScreenAddStarMutationVariables = {|
     starrableId: string;
   };
 |};
-
 export type RepositoryScreenAddStarMutationResponse = {|
   +addStar: ?{|
     +starrable: {|

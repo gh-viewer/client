@@ -31,4 +31,7 @@ export default StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 5,
   },
+  headerLeft: {
+    width: 50,
+  },
 })

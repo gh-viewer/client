@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, createElement } from 'react'
+import React, { Component, createElement, type ComponentType } from 'react'
 import { NetInfo, View } from 'react-native'
 import { Button, Icon, Text } from 'react-native-elements'
 import { QueryRenderer } from 'react-relay'
@@ -14,12 +14,11 @@ type QueryErrorProps = {
   error: Error,
   retry: () => void,
 }
+type QueryErrorState = {
+  waitingNetwork: boolean,
+}
 
-class QueryError extends Component {
-  props: QueryErrorProps
-  state: {
-    waitingNetwork: boolean,
-  }
+class QueryError extends Component<QueryErrorProps, QueryErrorState> {
   connectionListener: ?{
     remove: () => void,
   }
@@ -53,37 +52,39 @@ class QueryError extends Component {
   }
 
   render() {
-    return this.state.waitingNetwork
-      ? <View style={[sharedStyles.scene, sharedStyles.centerContents]}>
-          <View style={sharedStyles.mainContents}>
-            <Text h3 style={sharedStyles.textCenter}>
-              Waiting for network...
-            </Text>
-          </View>
+    return this.state.waitingNetwork ? (
+      <View style={[sharedStyles.scene, sharedStyles.centerContents]}>
+        <View style={sharedStyles.mainContents}>
+          <Text h3 style={sharedStyles.textCenter}>
+            Waiting for network...
+          </Text>
         </View>
-      : <View style={[sharedStyles.scene, sharedStyles.centerContents]}>
-          <View style={sharedStyles.mainContents}>
-            <Text h3 style={sharedStyles.textCenter}>
-              {this.props.error.message || 'Request failed'}
-            </Text>
-          </View>
-          <View style={sharedStyles.bottomContents}>
-            <Button onPress={this.props.retry} title="Retry" />
-          </View>
+      </View>
+    ) : (
+      <View style={[sharedStyles.scene, sharedStyles.centerContents]}>
+        <View style={sharedStyles.mainContents}>
+          <Text h3 style={sharedStyles.textCenter}>
+            {this.props.error.message || 'Request failed'}
+          </Text>
         </View>
+        <View style={sharedStyles.bottomContents}>
+          <Button onPress={this.props.retry} title="Retry" />
+        </View>
+      </View>
+    )
   }
 }
 
-export default class ScreenRenderer extends Component {
+type ScreenRendererProps = {
+  container: ComponentType<any>,
+  navigation: Object,
+  query: mixed,
+  variables?: Object,
+}
+
+export default class ScreenRenderer extends Component<ScreenRendererProps> {
   static contextTypes = {
     environment: EnvironmentPropType.isRequired,
-  }
-
-  props: {
-    container: Component<*, *, *>,
-    navigation: Object,
-    query: mixed,
-    variables?: Object,
   }
 
   render() {

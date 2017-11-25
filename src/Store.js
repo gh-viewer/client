@@ -1,8 +1,8 @@
 // @flow
 
 import { AsyncStorage } from 'react-native'
-import { combineReducers, createStore } from 'redux'
-import { createPersistor, getStoredState } from 'redux-persist'
+import { createStore } from 'redux'
+import { persistStore, persistCombineReducers } from 'redux-persist'
 
 export type Action =
   | {
@@ -16,20 +16,7 @@ export type Action =
       },
     }
 
-const persistConfig = { storage: AsyncStorage }
-
-const getInitialState = (): Promise<Object> => {
-  return new Promise(resolve => {
-    getStoredState(persistConfig, (err, state) => {
-      if (err) {
-        console.warn('Failed to get stored state', err)
-        resolve({})
-      } else {
-        resolve(state)
-      }
-    })
-  })
-}
+const persistConfig = { key: 'ghv', storage: AsyncStorage }
 
 const authReducer = (state = null, action: Action) => {
   switch (action.type) {
@@ -42,10 +29,8 @@ const authReducer = (state = null, action: Action) => {
   }
 }
 
-const reducer = combineReducers({ auth: authReducer })
+const reducer = persistCombineReducers(persistConfig, { auth: authReducer })
 
-export const create = async () => {
-  const store = createStore(reducer, await getInitialState())
-  createPersistor(store, persistConfig)
-  return store
-}
+export const store = createStore(reducer)
+
+export const persistor = persistStore(store)

@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash f9f370b1e141d0aed2acccc84b12ec43
+ * @relayHash afbe861a081ca41e3fd523a6030e180e
  */
 
 /* eslint-disable */
@@ -49,8 +49,6 @@ fragment HomeScreen_viewer on User {
       pageInfo {
         endCursor
         hasNextPage
-        hasPreviousPage
-        startCursor
       }
     }
   }
@@ -334,31 +332,6 @@ const batch /*: ConcreteBatch*/ = {
                           }
                         ],
                         "storageKey": null
-                      },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "PageInfo",
-                        "name": "pageInfo",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "args": null,
-                            "name": "hasPreviousPage",
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "args": null,
-                            "name": "startCursor",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
                       }
                     ]
                   }
@@ -405,7 +378,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query HomeScreenQuery(\n  $count: Int!\n  $cursor: String\n) {\n  viewer {\n    ...HomeScreen_viewer\n    id\n  }\n}\n\nfragment HomeScreen_viewer on User {\n  repositories(after: $cursor, first: $count, orderBy: {field: UPDATED_AT, direction: DESC}) {\n    edges {\n      node {\n        ...HomeScreen_repository\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    ... on RepositoryConnection {\n      edges {\n        cursor\n        node {\n          __typename\n          id\n        }\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n        hasPreviousPage\n        startCursor\n      }\n    }\n  }\n}\n\nfragment HomeScreen_repository on Repository {\n  id\n  name\n  nameWithOwner\n  owner {\n    __typename\n    login\n    ... on User {\n      isViewer\n    }\n    id\n  }\n}\n"
+  "text": "query HomeScreenQuery(\n  $count: Int!\n  $cursor: String\n) {\n  viewer {\n    ...HomeScreen_viewer\n    id\n  }\n}\n\nfragment HomeScreen_viewer on User {\n  repositories(after: $cursor, first: $count, orderBy: {field: UPDATED_AT, direction: DESC}) {\n    edges {\n      node {\n        ...HomeScreen_repository\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    ... on RepositoryConnection {\n      edges {\n        cursor\n        node {\n          __typename\n          id\n        }\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n    }\n  }\n}\n\nfragment HomeScreen_repository on Repository {\n  id\n  name\n  nameWithOwner\n  owner {\n    __typename\n    login\n    ... on User {\n      isViewer\n    }\n    id\n  }\n}\n"
 };
 
 module.exports = batch;
