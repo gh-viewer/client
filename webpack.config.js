@@ -12,8 +12,8 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
         exclude: /react-native-web/,
+        loader: 'babel-loader',
       },
       {
         test: /\.(png|ttf)$/,
@@ -36,7 +36,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      __DEV__: JSON.stringify(true)
+      __DEV__: JSON.stringify(true),
     }),
   ],
   devServer: {
