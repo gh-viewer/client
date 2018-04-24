@@ -4,9 +4,9 @@ import React, { Component, createElement, type ComponentType } from 'react'
 import { NetInfo, View } from 'react-native'
 import { Button, Icon, Text } from 'react-native-elements'
 import { QueryRenderer } from 'react-relay'
+import type { Environment } from 'relay-runtime'
 
-import { EnvironmentPropType } from '../Environment'
-
+import { EnvironmentConsumer } from './EnvironmentProvider'
 import ScreenLoader from './ScreenLoader'
 import sharedStyles from './styles'
 
@@ -82,30 +82,38 @@ type ScreenRendererProps = {
   variables?: Object,
 }
 
-export default class ScreenRenderer extends Component<ScreenRendererProps> {
-  static contextTypes = {
-    environment: EnvironmentPropType.isRequired,
-  }
+const ScreenRenderer = ({
+  container,
+  navigation,
+  query,
+  variables,
+}: ScreenRendererProps) => (
+  <EnvironmentConsumer>
+    {(environment: ?Environment) =>
+      environment ? (
+        <QueryRenderer
+          environment={environment}
+          query={query}
+          variables={variables}
+          render={({ error, props, retry }) => {
+            return error ? (
+              <QueryError error={error} retry={retry} />
+            ) : props ? (
+              createElement(container, {
+                environment,
+                navigation,
+                ...props,
+              })
+            ) : (
+              <ScreenLoader />
+            )
+          }}
+        />
+      ) : (
+        <ScreenLoader />
+      )
+    }
+  </EnvironmentConsumer>
+)
 
-  render() {
-    return (
-      <QueryRenderer
-        environment={this.context.environment}
-        query={this.props.query}
-        variables={this.props.variables}
-        render={({ error, props, retry }) => {
-          if (error) {
-            return <QueryError error={error} retry={retry} />
-          } else if (props) {
-            return createElement(this.props.container, {
-              navigation: this.props.navigation,
-              ...props,
-            })
-          } else {
-            return <ScreenLoader />
-          }
-        }}
-      />
-    )
-  }
-}
+export default ScreenRenderer

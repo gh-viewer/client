@@ -4,8 +4,7 @@ import React, { Component } from 'react'
 import { Linking, ScrollView, StyleSheet, View } from 'react-native'
 import { List, ListItem, Icon, Text } from 'react-native-elements'
 import { commitMutation, createFragmentContainer, graphql } from 'react-relay'
-
-import { EnvironmentPropType } from '../Environment'
+import type { Environment } from 'relay-runtime'
 
 import ScreenRenderer from './ScreenRenderer'
 import sharedStyles from './styles'
@@ -39,15 +38,12 @@ const RemoveStarMutation = graphql`
 `
 
 type Props = {
+  environment: Environment,
   navigation: Object,
   repository: RepositoryType,
 }
 
 class Repository extends Component<Props> {
-  static contextTypes = {
-    environment: EnvironmentPropType.isRequired,
-  }
-
   onPressParent = () => {
     const { navigation, repository } = this.props
     navigation.navigate('Repository', {
@@ -57,10 +53,10 @@ class Repository extends Component<Props> {
   }
 
   onPressStar = () => {
-    const { repository } = this.props
+    const { environment, repository } = this.props
     const isAdding = !repository.viewerHasStarred
 
-    commitMutation(this.context.environment, {
+    commitMutation(environment, {
       mutation: isAdding ? AddStarMutation : RemoveStarMutation,
       variables: {
         input: {

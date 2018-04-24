@@ -7,37 +7,32 @@
 'use strict';
 
 /*::
-import type {ConcreteFragment} from 'relay-runtime';
+import type { ConcreteFragment } from 'relay-runtime';
+type HomeScreen_repository$ref = any;
+import type { FragmentReference } from 'relay-runtime';
+declare export opaque type HomeScreen_viewer$ref: FragmentReference;
 export type HomeScreen_viewer = {|
   +repositories: {|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
-        +id: string;
-      |};
-    |}>;
+        +id: string,
+        +$fragmentRefs: HomeScreen_repository$ref,
+      |},
+    |}>,
     +pageInfo: {|
-      +endCursor: ?string;
-      +hasNextPage: boolean;
-    |};
-  |};
+      +endCursor: ?string,
+      +hasNextPage: boolean,
+    |},
+  |},
+  +$refType: HomeScreen_viewer$ref,
 |};
 */
 
 
-const fragment /*: ConcreteFragment*/ = {
-  "argumentDefinitions": [
-    {
-      "kind": "RootArgument",
-      "name": "cursor",
-      "type": "String"
-    },
-    {
-      "kind": "RootArgument",
-      "name": "count",
-      "type": "Int"
-    }
-  ],
+const node/*: ConcreteFragment*/ = {
   "kind": "Fragment",
+  "name": "HomeScreen_viewer",
+  "type": "User",
   "metadata": {
     "connection": [
       {
@@ -50,40 +45,54 @@ const fragment /*: ConcreteFragment*/ = {
       }
     ]
   },
-  "name": "HomeScreen_viewer",
+  "argumentDefinitions": [
+    {
+      "kind": "RootArgument",
+      "name": "cursor",
+      "type": "String"
+    },
+    {
+      "kind": "RootArgument",
+      "name": "count",
+      "type": "Int"
+    }
+  ],
   "selections": [
     {
       "kind": "LinkedField",
       "alias": "repositories",
+      "name": "__HomeScreen_repositories_connection",
+      "storageKey": "__HomeScreen_repositories_connection(orderBy:{\"direction\":\"DESC\",\"field\":\"UPDATED_AT\"})",
       "args": [
         {
           "kind": "Literal",
           "name": "orderBy",
           "value": {
-            "field": "UPDATED_AT",
-            "direction": "DESC"
+            "direction": "DESC",
+            "field": "UPDATED_AT"
           },
           "type": "RepositoryOrder"
         }
       ],
       "concreteType": "RepositoryConnection",
-      "name": "__HomeScreen_repositories_connection",
       "plural": false,
       "selections": [
         {
           "kind": "LinkedField",
           "alias": null,
+          "name": "edges",
+          "storageKey": null,
           "args": null,
           "concreteType": "RepositoryEdge",
-          "name": "edges",
           "plural": true,
           "selections": [
             {
               "kind": "LinkedField",
               "alias": null,
+              "name": "node",
+              "storageKey": null,
               "args": null,
               "concreteType": "Repository",
-              "name": "node",
               "plural": false,
               "selections": [
                 {
@@ -94,88 +103,56 @@ const fragment /*: ConcreteFragment*/ = {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "args": null,
                   "name": "id",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "__typename",
+                  "args": null,
                   "storageKey": null
                 }
-              ],
+              ]
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
               "storageKey": null
             }
-          ],
-          "storageKey": null
+          ]
         },
         {
           "kind": "LinkedField",
           "alias": null,
+          "name": "pageInfo",
+          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
-          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
               "kind": "ScalarField",
               "alias": null,
-              "args": null,
               "name": "endCursor",
+              "args": null,
               "storageKey": null
             },
             {
               "kind": "ScalarField",
               "alias": null,
-              "args": null,
               "name": "hasNextPage",
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "RepositoryConnection",
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
               "args": null,
-              "concreteType": "RepositoryEdge",
-              "name": "edges",
-              "plural": true,
-              "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "args": null,
-                  "name": "cursor",
-                  "storageKey": null
-                },
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Repository",
-                  "name": "node",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "args": null,
-                      "name": "__typename",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                }
-              ],
               "storageKey": null
             }
           ]
         }
-      ],
-      "storageKey": "__HomeScreen_repositories_connection{\"orderBy\":{\"direction\":\"DESC\",\"field\":\"UPDATED_AT\"}}"
+      ]
     }
-  ],
-  "type": "User"
+  ]
 };
-
-module.exports = fragment;
+(node/*: any*/).hash = 'fc7dc06a1e3af6ef54393f95d23cefe0';
+module.exports = node;

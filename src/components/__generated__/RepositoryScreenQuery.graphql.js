@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 42df4b01583ff2a56a467fb14b27afa5
+ * @relayHash 3a3677aef0b93dd49ca0f528b5780663
  */
 
 /* eslint-disable */
@@ -8,9 +8,15 @@
 'use strict';
 
 /*::
-import type {ConcreteBatch} from 'relay-runtime';
+import type { ConcreteRequest } from 'relay-runtime';
+type RepositoryScreen_repository$ref = any;
+export type RepositoryScreenQueryVariables = {|
+  id: string,
+|};
 export type RepositoryScreenQueryResponse = {|
-  +repository: ?{| |};
+  +repository: ?{|
+    +$fragmentRefs: RepositoryScreen_repository$ref,
+  |},
 |};
 */
 
@@ -47,33 +53,58 @@ fragment RepositoryScreen_repository on Repository {
 }
 */
 
-const batch /*: ConcreteBatch*/ = {
+const node/*: ConcreteRequest*/ = (function(){
+var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "id",
+    "type": "ID!",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "id",
+    "type": "ID!"
+  }
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__typename",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
+  "kind": "Request",
+  "operationKind": "query",
+  "name": "RepositoryScreenQuery",
+  "id": null,
+  "text": "query RepositoryScreenQuery(\n  $id: ID!\n) {\n  repository: node(id: $id) {\n    __typename\n    ...RepositoryScreen_repository\n    id\n  }\n}\n\nfragment RepositoryScreen_repository on Repository {\n  description\n  id\n  isFork\n  name\n  owner {\n    __typename\n    login\n    id\n  }\n  parent {\n    id\n    nameWithOwner\n  }\n  stargazers {\n    totalCount\n  }\n  viewerHasStarred\n}\n",
+  "metadata": {},
   "fragment": {
-    "argumentDefinitions": [
-      {
-        "kind": "LocalArgument",
-        "name": "id",
-        "type": "ID!",
-        "defaultValue": null
-      }
-    ],
     "kind": "Fragment",
-    "metadata": null,
     "name": "RepositoryScreenQuery",
+    "type": "Query",
+    "metadata": null,
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": "repository",
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "id",
-            "variableName": "id",
-            "type": "ID!"
-          }
-        ],
-        "concreteType": null,
         "name": "node",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": null,
         "plural": false,
         "selections": [
           {
@@ -81,58 +112,26 @@ const batch /*: ConcreteBatch*/ = {
             "name": "RepositoryScreen_repository",
             "args": null
           }
-        ],
-        "storageKey": null
+        ]
       }
-    ],
-    "type": "Query"
+    ]
   },
-  "id": null,
-  "kind": "Batch",
-  "metadata": {},
-  "name": "RepositoryScreenQuery",
-  "query": {
-    "argumentDefinitions": [
-      {
-        "kind": "LocalArgument",
-        "name": "id",
-        "type": "ID!",
-        "defaultValue": null
-      }
-    ],
-    "kind": "Root",
+  "operation": {
+    "kind": "Operation",
     "name": "RepositoryScreenQuery",
-    "operation": "query",
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": "repository",
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "id",
-            "variableName": "id",
-            "type": "ID!"
-          }
-        ],
-        "concreteType": null,
         "name": "node",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": null,
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "__typename",
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "id",
-            "storageKey": null
-          },
+          v2,
+          v3,
           {
             "kind": "InlineFragment",
             "type": "Repository",
@@ -140,114 +139,95 @@ const batch /*: ConcreteBatch*/ = {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "args": null,
                 "name": "description",
+                "args": null,
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "args": null,
                 "name": "isFork",
+                "args": null,
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "args": null,
                 "name": "name",
+                "args": null,
                 "storageKey": null
               },
               {
                 "kind": "LinkedField",
                 "alias": null,
+                "name": "owner",
+                "storageKey": null,
                 "args": null,
                 "concreteType": null,
-                "name": "owner",
                 "plural": false,
                 "selections": [
+                  v2,
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "args": null,
-                    "name": "__typename",
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
                     "name": "login",
+                    "args": null,
                     "storageKey": null
                   },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "id",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
+                  v3
+                ]
               },
               {
                 "kind": "LinkedField",
                 "alias": null,
+                "name": "parent",
+                "storageKey": null,
                 "args": null,
                 "concreteType": "Repository",
-                "name": "parent",
                 "plural": false,
                 "selections": [
+                  v3,
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "args": null,
-                    "name": "id",
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
                     "name": "nameWithOwner",
+                    "args": null,
                     "storageKey": null
                   }
-                ],
-                "storageKey": null
+                ]
               },
               {
                 "kind": "LinkedField",
                 "alias": null,
+                "name": "stargazers",
+                "storageKey": null,
                 "args": null,
                 "concreteType": "StargazerConnection",
-                "name": "stargazers",
                 "plural": false,
                 "selections": [
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "args": null,
                     "name": "totalCount",
+                    "args": null,
                     "storageKey": null
                   }
-                ],
-                "storageKey": null
+                ]
               },
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "args": null,
                 "name": "viewerHasStarred",
+                "args": null,
                 "storageKey": null
               }
             ]
           }
-        ],
-        "storageKey": null
+        ]
       }
     ]
-  },
-  "text": "query RepositoryScreenQuery(\n  $id: ID!\n) {\n  repository: node(id: $id) {\n    __typename\n    ...RepositoryScreen_repository\n    id\n  }\n}\n\nfragment RepositoryScreen_repository on Repository {\n  description\n  id\n  isFork\n  name\n  owner {\n    __typename\n    login\n    id\n  }\n  parent {\n    id\n    nameWithOwner\n  }\n  stargazers {\n    totalCount\n  }\n  viewerHasStarred\n}\n"
+  }
 };
-
-module.exports = batch;
+})();
+(node/*: any*/).hash = 'dbf316bbe39734addca20832de9c43ab';
+module.exports = node;

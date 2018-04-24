@@ -2,17 +2,22 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-  entry: ['babel-regenerator-runtime', './index.web.js'],
+  mode: 'development',
+  entry: {
+    app: ['babel-regenerator-runtime', './index.web.js'],
+  },
   output: {
     path: path.resolve(__dirname, 'desktop', 'dist'),
     filename: 'bundle.js',
-    publicPath: 'dist/',
+  },
+  node: {
+    __filename: true,
+    __dirname: true,
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /react-native-web/,
         loader: 'babel-loader',
       },
       {
@@ -21,27 +26,16 @@ module.exports = {
       },
     ],
   },
-  target: 'electron-renderer',
-  devtool: 'source-map',
   resolve: {
     alias: {
       'react-native': 'react-native-electron',
-      'react-navigation': 'react-navigation/lib-rn/react-navigation.js',
     },
     extensions: ['.web.js', '.js', '.json'],
-  },
-  node: {
-    __filename: true,
-    __dirname: true,
   },
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(true),
     }),
   ],
-  devServer: {
-    contentBase: path.resolve(__dirname, 'desktop'),
-    overlay: true,
-    port: 8082,
-  },
+  target: 'electron-renderer',
 }

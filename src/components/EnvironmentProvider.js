@@ -1,13 +1,14 @@
 // @flow
 
-import React, { Component, type Node } from 'react'
+// $FlowFixMe: createContext type
+import React, { Component, createContext, type Node } from 'react'
 import { StyleSheet, View, WebView } from 'react-native'
 import { Button, Text } from 'react-native-elements'
 import { connect } from 'react-redux'
 import type { Environment } from 'relay-runtime'
 import { parse } from 'url'
 
-import { create, EnvironmentPropType } from '../Environment'
+import { create as createEnvironment } from '../Environment'
 import type { Action } from '../Store'
 
 import ScreenLoader from './ScreenLoader'
@@ -31,42 +32,31 @@ type State = {
 // Edit here if you want to use your own authentication server
 const AUTH_SERVER = 'ghviewer.herokuapp.com'
 
+const Context = createContext(null)
+
+export const EnvironmentConsumer = Context.Consumer
+
 class EnvironmentProvider extends Component<Props, State> {
-  static childContextTypes = {
-    environment: EnvironmentPropType,
-  }
-
-  constructor(props: Props) {
-    super(props)
-    this.state = this.getState(props)
-  }
-
-  getState(props: Props) {
-    return props.access_token
-      ? {
-          auth: 'AUTHORIZED',
-          environment: create(props.access_token, this.onUnauthorized),
-        }
-      : {
-          auth: 'UNAUTHORIZED',
-          environment: null,
-        }
-  }
-
-  getChildContext() {
-    return {
-      environment: this.state.environment,
+  static getDerivedStateFromProps(props: Props, prevState: ?State): ?State {
+    let nextState = null
+    if (
+      props.access_token == null &&
+      (prevState == null || prevState.auth === 'AUTHORIZED')
+    ) {
+      nextState = {
+        auth: 'UNAUTHORIZED',
+        environment: null,
+      }
+    } else if (
+      props.access_token != null &&
+      (prevState == null || prevState.auth === 'UNAUTHORIZED')
+    ) {
+      nextState = {
+        auth: 'AUTHORIZED',
+        environment: createEnvironment(props.access_token),
+      }
     }
-  }
-
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.access_token !== this.props.access_token) {
-      this.setState(this.getState(nextProps))
-    }
-  }
-
-  onUnauthorized = () => {
-    this.props.dispatch({ type: 'AUTH_INVALID' })
+    return nextState
   }
 
   onNavigationStateChange = (state: NavigationState) => {
@@ -95,10 +85,15 @@ class EnvironmentProvider extends Component<Props, State> {
   }
 
   render() {
-    if (this.state.environment) {
-      return this.props.children
+    const { auth, environment } = this.state
+
+    if (environment != null) {
+      return (
+        <Context.Provider value={environment}>
+          this.props.children
+        </Context.Provider>
+      )
     }
-    const { auth } = this.state
 
     if (auth === 'UNAUTHORIZED') {
       return (
