@@ -23,6 +23,9 @@ module.exports = {
       {
         test: /\.(png|ttf)$/,
         loader: 'file-loader',
+        options: {
+          publicPath: 'dist/',
+        },
       },
     ],
   },

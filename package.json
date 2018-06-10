@@ -1,6 +1,6 @@
 {
   "name": "GHViewer",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -12,43 +12,44 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "relay-compile": "relay-compiler --schema schema.graphql --src src",
     "relay-watch": "yarn run relay-compile -- --watch",
-    "relay-schema": "graphql-fetch-schema --graphql https://api.github.com/graphql?access_token=$ACCESS_TOKEN",
+    "relay-schema":
+      "graphql-fetch-schema --graphql https://api.github.com/graphql?access_token=$ACCESS_TOKEN",
     "test": "jest"
   },
   "dependencies": {
     "babel-regenerator-runtime": "^6.5.0",
-    "electron": "~1.8.4",
+    "electron": "^2.0.2",
     "prop-types": "^15.6.1",
     "react": "16.3.1",
     "react-art": "16.3.1",
     "react-dom": "16.3.1",
-    "react-native": "^0.55.3",
-    "react-native-electron": "^0.5.1",
+    "react-native": "^0.55.4",
+    "react-native-electron": "^0.7.0",
     "react-native-elements": "^0.19.1",
     "react-native-vector-icons": "^4.6.0",
-    "react-native-web": "^0.6.1",
-    "react-navigation": "^1.5.11",
+    "react-native-web": "^0.8.3",
+    "react-navigation": "^2.2.5",
     "react-redux": "^5.0.7",
-    "react-relay": "^1.5.0",
+    "react-relay": "^1.6.0",
     "redux": "^4.0.0",
-    "redux-persist": "^5.9.1",
-    "relay-runtime": "^1.5.0"
+    "redux-persist": "^5.10.0",
+    "relay-runtime": "^1.6.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-jest": "^22.4.3",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.0.1",
     "babel-loader": "^7.1.4",
-    "babel-plugin-relay": "^1.5.0",
+    "babel-plugin-relay": "^1.6.0",
     "babel-preset-react-native": "^4.0.0",
     "file-loader": "^1.1.11",
     "flow-bin": "^0.67.0",
     "graphql-fetch-schema": "^0.8.0",
-    "jest": "22.4.3",
+    "jest": "23.1.0",
     "react-test-renderer": "16.3.1",
-    "relay-compiler": "^1.5.0",
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.0.15",
-    "webpack-serve": "^0.3.1"
+    "relay-compiler": "^1.6.0",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.3",
+    "webpack-serve": "^1.0.4"
   },
   "jest": {
     "preset": "react-native"

@@ -1,9 +1,9 @@
-import { StackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation'
 
 import HomeScreen from './HomeScreen'
 import RepositoryScreen from './RepositoryScreen'
 
-export default StackNavigator(
+export default createStackNavigator(
   {
     Home: { screen: HomeScreen },
     Repository: { screen: RepositoryScreen },

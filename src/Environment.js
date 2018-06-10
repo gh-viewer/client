@@ -2,7 +2,7 @@
 
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 
-import { store } from './Store'
+import { store as reduxStore } from './Store'
 
 export const create = (access_token: string) => {
   const fetchQuery = (operation: Object, variables?: Object) => {
@@ -20,11 +20,12 @@ export const create = (access_token: string) => {
       if (res.ok) return res.json()
       else {
         if (res.status === 401) {
-          store.dispatch({ type: 'AUTH_INVALID' })
+          reduxStore.dispatch({ type: 'AUTH_INVALID' })
+        } else {
+          const error: Object = new Error(res.statusText || 'Request error')
+          error.status = res.status
+          return Promise.reject(error)
         }
-        const error: Object = new Error(res.statusText || 'Request error')
-        error.status = res.status
-        throw error
       }
     })
   }

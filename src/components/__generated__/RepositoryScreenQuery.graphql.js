@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 3a3677aef0b93dd49ca0f528b5780663
+ * @relayHash 1ee7cd4accca19cd4b49d4ccc65d4884
  */
 
 /* eslint-disable */
@@ -11,12 +11,12 @@
 import type { ConcreteRequest } from 'relay-runtime';
 type RepositoryScreen_repository$ref = any;
 export type RepositoryScreenQueryVariables = {|
-  id: string,
+  id: string
 |};
 export type RepositoryScreenQueryResponse = {|
   +repository: ?{|
-    +$fragmentRefs: RepositoryScreen_repository$ref,
-  |},
+    +$fragmentRefs: RepositoryScreen_repository$ref
+  |}
 |};
 */
 
@@ -229,5 +229,6 @@ return {
   }
 };
 })();
+// prettier-ignore
 (node/*: any*/).hash = 'dbf316bbe39734addca20832de9c43ab';
 module.exports = node;

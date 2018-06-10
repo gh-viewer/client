@@ -9,7 +9,7 @@
 /*::
 import type { ConcreteFragment } from 'relay-runtime';
 type HomeScreen_repository$ref = any;
-import type { FragmentReference } from 'relay-runtime';
+import type { FragmentReference } from "relay-runtime";
 declare export opaque type HomeScreen_viewer$ref: FragmentReference;
 export type HomeScreen_viewer = {|
   +repositories: {|
@@ -17,7 +17,7 @@ export type HomeScreen_viewer = {|
       +node: ?{|
         +id: string,
         +$fragmentRefs: HomeScreen_repository$ref,
-      |},
+      |}
     |}>,
     +pageInfo: {|
       +endCursor: ?string,
@@ -154,5 +154,6 @@ const node/*: ConcreteFragment*/ = {
     }
   ]
 };
+// prettier-ignore
 (node/*: any*/).hash = 'fc7dc06a1e3af6ef54393f95d23cefe0';
 module.exports = node;

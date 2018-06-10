@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 142f8297eaa1c52f7d9d81ed49fad29a
+ * @relayHash 8f7356234378e85cca085614e48623d7
  */
 
 /* eslint-disable */
@@ -16,8 +16,8 @@ export type HomeScreenQueryVariables = {|
 |};
 export type HomeScreenQueryResponse = {|
   +viewer: {|
-    +$fragmentRefs: HomeScreen_viewer$ref,
-  |},
+    +$fragmentRefs: HomeScreen_viewer$ref
+  |}
 |};
 */
 
@@ -316,5 +316,6 @@ return {
   }
 };
 })();
+// prettier-ignore
 (node/*: any*/).hash = 'a7951b4be4b420e24e4c4969bb2e63b4';
 module.exports = node;

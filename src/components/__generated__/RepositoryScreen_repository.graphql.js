@@ -8,7 +8,7 @@
 
 /*::
 import type { ConcreteFragment } from 'relay-runtime';
-import type { FragmentReference } from 'relay-runtime';
+import type { FragmentReference } from "relay-runtime";
 declare export opaque type RepositoryScreen_repository$ref: FragmentReference;
 export type RepositoryScreen_repository = {|
   +description: ?string,
@@ -24,7 +24,7 @@ export type RepositoryScreen_repository = {|
     +nameWithOwner: string,
   |},
   +stargazers: {|
-    +totalCount: number,
+    +totalCount: number
   |},
   +viewerHasStarred: boolean,
   +$refType: RepositoryScreen_repository$ref,
@@ -141,5 +141,6 @@ return {
   ]
 };
 })();
+// prettier-ignore
 (node/*: any*/).hash = '41a6459f1f8abf6ece77f9abeb9f5344';
 module.exports = node;

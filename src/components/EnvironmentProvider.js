@@ -59,6 +59,11 @@ class EnvironmentProvider extends Component<Props, State> {
     return nextState
   }
 
+  state = {
+    auth: 'UNAUTHORIZED',
+    environment: null,
+  }
+
   onNavigationStateChange = (state: NavigationState) => {
     const { host, pathname, query } = parse(state.url, true)
     if (
@@ -90,7 +95,7 @@ class EnvironmentProvider extends Component<Props, State> {
     if (environment != null) {
       return (
         <Context.Provider value={environment}>
-          this.props.children
+          {this.props.children}
         </Context.Provider>
       )
     }

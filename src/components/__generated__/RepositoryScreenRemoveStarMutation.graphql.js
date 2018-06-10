@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 11e6dc6cefd0f6649df1a06d955b59f3
+ * @relayHash 9f4600ebe6e42c58e2af761b114adcce
  */
 
 /* eslint-disable */
@@ -9,21 +9,22 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+export type RemoveStarInput = {
+  clientMutationId?: ?string,
+  starrableId: string,
+};
 export type RepositoryScreenRemoveStarMutationVariables = {|
-  input: {
-    clientMutationId?: ?string,
-    starrableId: string,
-  },
+  input: RemoveStarInput
 |};
 export type RepositoryScreenRemoveStarMutationResponse = {|
   +removeStar: ?{|
     +starrable: {|
       +stargazers: {|
-        +totalCount: number,
+        +totalCount: number
       |},
       +viewerHasStarred: boolean,
-    |},
-  |},
+    |}
+  |}
 |};
 */
 
@@ -174,5 +175,6 @@ return {
   }
 };
 })();
+// prettier-ignore
 (node/*: any*/).hash = '2f9b6bcaf7d99544bfe7e506ca85183e';
 module.exports = node;
