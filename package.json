@@ -1,6 +1,6 @@
 {
   "name": "GHViewer",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -12,8 +12,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "relay-compile": "relay-compiler --schema schema.graphql --src src",
     "relay-watch": "yarn run relay-compile -- --watch",
-    "relay-schema":
-      "graphql-fetch-schema --graphql https://api.github.com/graphql?access_token=$ACCESS_TOKEN",
+    "relay-schema": "graphql-fetch-schema --graphql https://api.github.com/graphql?access_token=$ACCESS_TOKEN",
     "test": "jest"
   },
   "dependencies": {
